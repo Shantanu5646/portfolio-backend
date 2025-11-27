@@ -13,6 +13,7 @@ db = client[DB_NAME]
 
 # Admin token (set in .env)
 ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "MySuperSecretToken123")  # fallback if not in .env
+print("ADMIN_TOKEN at startup:", ADMIN_TOKEN)
 
 # --------------------
 # Admin-only PDF Upload
@@ -22,6 +23,7 @@ async def upload_pdf(
     file: UploadFile = File(...),
     x_admin_token: str = Header(None)  # token in request header
 ):
+    print("Received x_admin_token header:", x_admin_token)  # 👈 add this
     # Authorization check
     if x_admin_token != ADMIN_TOKEN:
         raise HTTPException(status_code=403, detail="Not authorized")
